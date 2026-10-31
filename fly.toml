@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for uptime-kuma--olpg on 2026-10-31T15:04:22Z
+# fly.toml app configuration file generated for yasuo-uptime on 2026-10-31T15:10:31Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'uptime-kuma--olpg'
+app = 'yasuo-uptime'
 primary_region = 'sin'
 kill_signal = 'SIGINT'
 kill_timeout = '10s'
