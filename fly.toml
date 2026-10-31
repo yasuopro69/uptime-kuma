@@ -1,7 +1,7 @@
 # The real Fly application. CI deploys into whatever app is named here, so a
 # rename must be synced across this file, the README record and the deploy
 # token scope in the same commit; `tests/test_recurring_gate.py` pins the pair.
-app = "bxx-uptime-kuma"
+app = "yasuo-uptime"
 kill_signal = "SIGINT"
 kill_timeout = "10s"
 primary_region = "sin"
@@ -19,7 +19,7 @@ method = "get"
 # never subject to the CADDY_DOMAINS gate.
 path = "/health"
 # Must match the Caddyfile listener; Caddy is unprivileged, so not 80.
-port = 8080
+port = 3001
 timeout = "5s"
 type = "http"
 
