@@ -1,41 +1,44 @@
-# The real Fly application. CI deploys into whatever app is named here, so a
-# rename must be synced across this file, the README record and the deploy
-# token scope in the same commit; `tests/test_recurring_gate.py` pins the pair.
-app = "yasuo-uptime"
-kill_signal = "SIGINT"
-kill_timeout = "10s"
-primary_region = "sin"
+# fly.toml app configuration file generated for uptime-kuma--olpg on 2026-10-31T15:04:22Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'uptime-kuma--olpg'
+primary_region = 'sin'
+kill_signal = 'SIGINT'
+kill_timeout = '10s'
 swap_size_mb = 256
 
-# No `[build].image` on purpose: a mutable tag here is a second source of truth
-# that silently goes stale. The deploy workflow passes the exact amd64 digest
-# that validate passed; running `fly deploy` by hand builds this Dockerfile.
-
-[checks.health]
-grace_period = "1m0s"
-interval = "30s"
-method = "get"
-# Caddy answers this itself, so the probe survives a dead uptime-kuma and is
-# never subject to the CADDY_DOMAINS gate.
-path = "/health"
-# Must match the Caddyfile listener; Caddy is unprivileged, so not 80.
-port = 3001
-timeout = "5s"
-type = "http"
-
-[http_service]
-auto_start_machines = true
-auto_stop_machines = false
-force_https = true
-# Must match the Caddyfile listener. Port 80 fails with EACCES on Fly.
-internal_port = 8080
-min_machines_running = 1
-
-  [http_service.concurrency]
-  hard_limit = 150
-  soft_limit = 100
-  type = "requests"
+[build]
 
 [[mounts]]
-destination = "/app/data"
-source = "app_data"
+  source = 'app_data'
+  destination = '/app/data'
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'off'
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [http_service.concurrency]
+    type = 'requests'
+    hard_limit = 150
+    soft_limit = 100
+
+[checks]
+  [checks.health]
+    port = 3001
+    type = 'http'
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '1m0s'
+    method = 'get'
+    path = '/health'
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 512
